@@ -12,11 +12,11 @@ import servlet.CatServlet;
 public class DefaultCatServlet implements CatServlet {
     @Override
     public void doGet(CatRequest request, CatResponse response) throws Exception {
-
+        response.write("Hello world!");
     }
 
     @Override
     public void doPost(CatRequest request, CatResponse response) throws Exception {
-
+        response.write("Hello world!");
     }
 }

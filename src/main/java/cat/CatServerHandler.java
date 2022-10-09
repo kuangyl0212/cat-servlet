@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpRequest;
 import lombok.extern.java.Log;
+import servlet.CatRequest;
+import servlet.CatResponse;
 import servlet.CatServlet;
 
 /**
@@ -23,7 +25,9 @@ public class CatServerHandler extends ChannelInboundHandlerAdapter {
             log.info(heroRequest.getParameters().toString());
             CatServlet servlet = new DefaultCatServlet();
 
-
+            CatRequest catRequest = new CatHttpRequest(request);
+            CatResponse catResponse = new CatHttpResponse(ctx);
+            servlet.doGet(catRequest, catResponse);
         }
 
     }
