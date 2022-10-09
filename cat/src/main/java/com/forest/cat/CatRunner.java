@@ -7,7 +7,12 @@ package com.forest.cat;
  */
 public class CatRunner {
     public static void run(String[] args) {
-        CatServer server = new CatServer(8080, "com.forest.webapp");
+        CatServer server = null;
+        try {
+            server = new CatServer(8080, "com.forest.webapp");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         server.start();
     }
 }

@@ -1,5 +1,6 @@
 package com.forest.cat;
 
+import com.sun.xml.internal.ws.api.ResourceLoader;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,10 +10,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.util.internal.ResourcesUtil;
 import lombok.extern.java.Log;
 import com.forest.servlet.Server;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +31,7 @@ public class CatServer implements Server {
     private final String basePackage;
     private final Map<String, String> nameToClassNameMap;
 
-    public CatServer(Integer port, String basePackage) {
+    public CatServer(Integer port, String basePackage) throws ClassNotFoundException {
         this.port = port;
         this.basePackage = basePackage;
         nameToClassNameMap = new HashMap<>();

@@ -8,6 +8,7 @@ import com.forest.servlet.CatRequest;
 import com.forest.servlet.CatResponse;
 import com.forest.servlet.CatServlet;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -55,6 +56,11 @@ public class CatServerHandler extends ChannelInboundHandlerAdapter {
 
             if (className != null) {
                 servlet = (CatServlet) Class.forName(className).newInstance();
+            } else {
+                URL file = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+                if (file != null) {
+                    servlet = new StaticFileServlet(file);
+                }
             }
 
             servlet.doGet(catRequest, catResponse);

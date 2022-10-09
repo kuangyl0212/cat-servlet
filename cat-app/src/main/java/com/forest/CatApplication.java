@@ -1,6 +1,7 @@
 package com.forest;
 
 import com.forest.cat.CatRunner;
+import com.forest.cat.CatServer;
 
 /**
  * @Author ${USER}
@@ -9,6 +10,12 @@ import com.forest.cat.CatRunner;
  */
 public class CatApplication {
     public static void main(String[] args) {
-        CatRunner.run(args);
+        CatServer server = null;
+        try {
+            server = new CatServer(8080, "com.forest.webapp");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        server.start();
     }
 }
