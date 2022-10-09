@@ -1,8 +1,9 @@
-package cat;
+package com.forest.cat;
 
-import servlet.CatRequest;
-import servlet.CatResponse;
-import servlet.CatServlet;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import com.forest.servlet.CatRequest;
+import com.forest.servlet.CatResponse;
+import com.forest.servlet.CatServlet;
 
 /**
  * @Author forest
@@ -12,11 +13,12 @@ import servlet.CatServlet;
 public class DefaultCatServlet implements CatServlet {
     @Override
     public void doGet(CatRequest request, CatResponse response) throws Exception {
-        response.write("Hello world!");
+        response.setStatus(HttpResponseStatus.NOT_FOUND);
+        response.write("404 Not Found");
     }
 
     @Override
     public void doPost(CatRequest request, CatResponse response) throws Exception {
-        response.write("Hello world!");
+        this.doGet(request, response);
     }
 }

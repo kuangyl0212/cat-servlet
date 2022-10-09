@@ -1,4 +1,4 @@
-package servlet;
+package com.forest.servlet;
 
 /**
  * @Author forest

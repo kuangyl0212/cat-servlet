@@ -1,4 +1,6 @@
-package servlet;
+package com.forest.servlet;
+
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * @Author forest
@@ -8,4 +10,6 @@ package servlet;
 public interface CatResponse {
     // 将响应写入到Channel
     void write(String content) throws Exception;
+
+    void setStatus(HttpResponseStatus status);
 }

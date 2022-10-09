@@ -1,8 +1,8 @@
-package cat;
+package com.forest.cat;
 
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import servlet.CatRequest;
+import com.forest.servlet.CatRequest;
 
 import java.util.List;
 import java.util.Map;
