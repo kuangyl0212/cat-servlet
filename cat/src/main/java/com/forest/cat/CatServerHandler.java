@@ -8,7 +8,10 @@ import com.forest.servlet.CatRequest;
 import com.forest.servlet.CatResponse;
 import com.forest.servlet.CatServlet;
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 /**
@@ -18,6 +21,8 @@ import java.util.Map;
  */
 @Log
 public class CatServerHandler extends ChannelInboundHandlerAdapter {
+
+    private static final String DefaultFilePath = "/index.html";
 
     private final Map<String, String> nameToClassNameMap;
 
@@ -43,11 +48,8 @@ public class CatServerHandler extends ChannelInboundHandlerAdapter {
 
             // 读取请求的url中的path，匹配成本地的文件，然后返回给客户端
 
-
-
-
             CatRequest catRequest = new CatHttpRequest(request);
-            CatResponse catResponse = new CatHttpResponse(ctx, response);
+            CatResponse catResponse = new CatHttpResponse(ctx, response, request);
 
             String path = catRequest.getPath();
             String servletName = path.substring(path.lastIndexOf("/") + 1, path.length());
@@ -57,8 +59,19 @@ public class CatServerHandler extends ChannelInboundHandlerAdapter {
             if (className != null) {
                 servlet = (CatServlet) Class.forName(className).newInstance();
             } else {
-                URL file = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
-                if (file != null) {
+                // 如果访问的是目录的根路径，尝试读取默认的HTML文件
+                if (path.equals("/")) {
+                    path = DefaultFilePath;
+                }
+                URL fileUrl = Thread.currentThread().getContextClassLoader().getResource(".");
+
+                Path filePath = Paths.get(fileUrl.getPath(), path);
+                File file = filePath.toFile();
+                // 处理文件不存在的情况
+                if (file.isHidden() || !file.exists()) {
+                    servlet = new DefaultCatServlet();
+                }
+                else {
                     servlet = new StaticFileServlet(file);
                 }
             }

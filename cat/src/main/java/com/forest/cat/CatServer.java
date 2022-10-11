@@ -9,7 +9,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.internal.ResourcesUtil;
 import lombok.extern.java.Log;
 import com.forest.servlet.Server;
@@ -80,6 +82,8 @@ public class CatServer implements Server {
 
                             socketChannel.pipeline()
                                     .addLast(new HttpServerCodec())
+                                    .addLast(new HttpObjectAggregator(64 * 1024))
+                                    .addLast(new ChunkedWriteHandler())
                                     .addLast(new CatServerHandler(nameToClassNameMap));
                         }
                     })
